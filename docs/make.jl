@@ -5,6 +5,7 @@ makedocs(
     sitename = "HandyG.jl",
     modules = [HandyG],
     doctest = false,
+    format = Documenter.HTML(edit_link = "main"),
     pages = [
         "Home" => "index.md",
         "Manual" => [
@@ -20,3 +21,7 @@ makedocs(
     ],
 )
 
+deploydocs(
+    repo = "github.com/fkguo/HandyG.jl.git",
+    devbranch = "main",
+)

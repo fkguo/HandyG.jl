@@ -8,7 +8,14 @@ From a Git repository (GitHub/GitLab/…):
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/<ORG>/<REPO>.jl")
+Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
+```
+
+For private access via SSH:
+
+```julia
+using Pkg
+Pkg.add(url="git@github.com:fkguo/HandyG.jl.git")
 ```
 
 ## Provide `libhandyg`
@@ -47,4 +54,3 @@ The intended end state is a `*_jll` package published through Yggdrasil so end u
 ```bash
 julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate(); include("docs/make.jl")'
 ```
-

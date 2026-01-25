@@ -1,5 +1,7 @@
 # HandyG.jl
 
+[![Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://fkguo.github.io/HandyG.jl/dev/)
+
 Julia bindings for the Fortran library **handyG** (numerical evaluation of generalised polylogarithms).
 
 Upstream: https://gitlab.com/mule-tools/handyg  
@@ -7,8 +9,51 @@ Paper: https://arxiv.org/abs/1909.01656
 
 ## Documentation
 
-- Manual (Markdown source): `docs/src/index.md`
-- Build HTML docs locally: `julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate(); include("docs/make.jl")'`
+- Online docs (dev): https://fkguo.github.io/HandyG.jl/dev/
+- Manual source: `docs/src/index.md`
+
+Build HTML docs locally:
+
+```bash
+julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate(); include("docs/make.jl")'
+```
+
+## Installation
+
+This package can be installed directly from GitHub:
+
+```julia
+using Pkg
+Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
+```
+
+For private access via SSH:
+
+```julia
+using Pkg
+Pkg.add(url="git@github.com:fkguo/HandyG.jl.git")
+```
+
+### Provide `libhandyg`
+
+`HandyG.jl` requires the upstream shared library `libhandyg` to be available at runtime.
+
+- **Local build (developer workflow):**
+  ```bash
+  # expects the upstream handyG repo as a sibling: ../handyg
+  bash deps/build_local.sh
+  ```
+  Override the upstream source path:
+  ```bash
+  HANDYG_SRC=/path/to/handyG/src bash deps/build_local.sh
+  ```
+- **Point to an existing build:**
+  ```bash
+  export HANDYG_LIB=/abs/path/to/libhandyg.so    # Linux
+  export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
+  export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
+  ```
+- **Planned:** BinaryBuilder/JLL distribution (and Yggdrasil).
 
 ## Status
 
@@ -22,23 +67,6 @@ Planned:
 
 - Cross-platform binaries via BinaryBuilder/JLL (and Yggdrasil)
 - Quad builds (`--quad`) (temporary strategy: Windows may remain double-only)
-
-## Development quickstart (local build)
-
-This builds a shared `libhandyg` into `deps/usr/lib/` and uses it automatically.
-
-```bash
-# assumes you have the upstream handyG repo as a sibling ../handyg
-bash deps/build_local.sh
-
-julia -e 'using Pkg; Pkg.activate("."); using HandyG; println(G([1.0,0.0,0.5,0.3]))'
-```
-
-Override the handyG source path:
-
-```bash
-HANDYG_SRC=/path/to/handyG/src bash deps/build_local.sh
-```
 
 ## Library discovery
 
@@ -54,6 +82,9 @@ At runtime `HandyG.jl` looks for `libhandyg` in this order:
 ```julia
 using HandyG
 
+# (optional) clear handyG internal caches
+clearcache!()
+
 # superflat form (z..., y)
 G([1.0, 0.0, 0.5, 0.3])
 
@@ -62,6 +93,10 @@ G([1.0, 0.0, 0.5], 0.3)
 
 # condensed form
 G(Cint[1, 2], [1.0, 0.5], 0.3)
+
+# convenience: `m` can be `Vector{Int}`; converted to `Cint` via an internal scratch buffer
+m = [1, 2]
+G(m, [1.0, 0.5], 0.3)
 
 # explicit i0± prescription (SoA)
 z = ComplexF64[1, 0, 5]

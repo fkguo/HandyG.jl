@@ -42,7 +42,8 @@ function set_options!(; mpldelta::Union{Nothing,Float64}=nothing, lidelta::Union
     return nothing
 end
 
-const _SCRATCH_CINT_VEC = [Cint[] for _ in 1:max(1, Threads.nthreads())]
+const _DEFAULT_CINT_SCRATCH_CAP = 64
+const _SCRATCH_CINT_VEC = [Vector{Cint}(undef, _DEFAULT_CINT_SCRATCH_CAP) for _ in 1:max(1, Threads.nthreads())]
 
 @inline function _collect_cint_vec(x::AbstractVector{<:Integer})
     n = length(x)
@@ -176,8 +177,9 @@ end
 
 Convenience overload for condensed form that accepts any integer element type for `m`.
 
-This method allocates a temporary `Vector{Cint}` for ABI compatibility. For allocation-free
-hot paths, pass `m::Vector{Cint}`.
+This method converts `m` to the C-ABI element type (`Cint`) using an internal thread-local
+scratch buffer. It may allocate only when the scratch buffer grows. For allocation-free hot
+paths, pass `m::Vector{Cint}`.
 """
 @inline function G(m::AbstractVector{<:Integer}, z::StridedVector{Float64}, y::Union{Real,ComplexF64})
     return G(_collect_cint_vec(m), z, y)
@@ -256,8 +258,9 @@ end
 
 Convenience overload for condensed form that accepts any integer element type for `m`.
 
-This method allocates a temporary `Vector{Cint}` for ABI compatibility. For allocation-free
-hot paths, pass `m::Vector{Cint}`.
+This method converts `m` to the C-ABI element type (`Cint`) using an internal thread-local
+scratch buffer. It may allocate only when the scratch buffer grows. For allocation-free hot
+paths, pass `m::Vector{Cint}`.
 """
 @inline function G!(out::Ref{ComplexF64}, m::AbstractVector{<:Integer}, z::StridedVector{Float64}, y::Union{Real,ComplexF64})
     return G!(out, _collect_cint_vec(m), z, y)
@@ -360,7 +363,10 @@ end
 
 Convenience overloads that accept any integer element type for `len` (and `m` in condensed form).
 
-These methods allocate temporary `Vector{Cint}` / `Matrix{Cint}` buffers for ABI compatibility.
+For `len`, these methods convert to `Cint` using an internal thread-local scratch buffer and may
+allocate only when the scratch buffer grows. For condensed batch `m`, a `Matrix{Cint}` is
+allocated for ABI compatibility.
+
 For allocation-free hot paths, pass `len::Vector{Cint}` and (if applicable) `m::Matrix{Cint}`.
 """
 @inline function G_batch!(out::StridedVector{ComplexF64}, g::StridedMatrix{Float64}, len::AbstractVector{<:Integer})
