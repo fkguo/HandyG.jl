@@ -42,8 +42,12 @@ function set_options!(; mpldelta::Union{Nothing,Float64}=nothing, lidelta::Union
     return nothing
 end
 
+const _SCRATCH_CINT_VEC = [Cint[] for _ in 1:max(1, Threads.nthreads())]
+
 @inline function _collect_cint_vec(x::AbstractVector{<:Integer})
-    y = Vector{Cint}(undef, length(x))
+    n = length(x)
+    y = _SCRATCH_CINT_VEC[Threads.threadid()]
+    resize!(y, n)
     j = 1
     @inbounds for v in x
         y[j] = Cint(v)

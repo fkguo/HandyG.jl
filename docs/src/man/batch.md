@@ -8,7 +8,7 @@ This wrapper uses **fixed-depth column-major matrices**:
 - A `len::Vector{Cint}` tells how many entries are valid in each column
 - Results are written into `out::Vector{ComplexF64}` of length `N`
 
-`len` must be `Vector{Cint}` for allocation-free hot paths. For convenience you may pass other integer element types (e.g. `Vector{Int}`), in which case `HandyG.jl` allocates a temporary `Vector{Cint}`.
+`len` must be `Vector{Cint}` for allocation-free hot paths. For convenience you may pass other integer element types (e.g. `Vector{Int}`); `HandyG.jl` converts to `Cint` using an internal scratch buffer that may allocate when it grows.
 
 ## Superflat batch
 

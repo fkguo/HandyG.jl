@@ -23,7 +23,8 @@ using HandyG
         @test HandyG.G(m, zc, y) ≈ HandyG.G(g1) atol = 1e-12 rtol = 0
 
         # Convenience integer inputs (may allocate conversion buffers)
-        @test HandyG.G([1, 2], zc, y) ≈ HandyG.G(m, zc, y) atol = 1e-12 rtol = 0
+        mint = [1, 2]
+        @test HandyG.G(mint, zc, y) ≈ HandyG.G(m, zc, y) atol = 1e-12 rtol = 0
 
         # i0 prescription (manual SoA)
         x = 0.3
@@ -58,7 +59,8 @@ using HandyG
         @test out[2] ≈ HandyG.G(g2) atol = 1e-12 rtol = 0
 
         # Convenience len element type (may allocate)
-        HandyG.G_batch!(out, gmat, [4, 3])
+        len_super_int = [4, 3]
+        HandyG.G_batch!(out, gmat, len_super_int)
         @test out[1] ≈ HandyG.G(g1) atol = 1e-12 rtol = 0
         @test out[2] ≈ HandyG.G(g2) atol = 1e-12 rtol = 0
 
@@ -72,7 +74,8 @@ using HandyG
         @test out[2] ≈ HandyG.G([1.0, 2.0], 1.0) atol = 1e-12 rtol = 0
 
         # Convenience len element type (may allocate)
-        HandyG.G_batch!(out, zmat, yvec, [3, 2])
+        len_flat_int = [3, 2]
+        HandyG.G_batch!(out, zmat, yvec, len_flat_int)
         @test out[1] ≈ HandyG.G(z, y) atol = 1e-12 rtol = 0
         @test out[2] ≈ HandyG.G([1.0, 2.0], 1.0) atol = 1e-12 rtol = 0
 
@@ -86,10 +89,20 @@ using HandyG
         HandyG.G(m, zc, y)
         @test (@allocated HandyG.G(m, zc, y)) == 0
 
+        # Convenience condensed form: should be allocation-free after warmup
+        HandyG.G(mint, zc, y)
+        @test (@allocated HandyG.G(mint, zc, y)) == 0
+
         HandyG.G_batch!(out, gmat, len_super)
         @test (@allocated HandyG.G_batch!(out, gmat, len_super)) == 0
 
+        HandyG.G_batch!(out, gmat, len_super_int)
+        @test (@allocated HandyG.G_batch!(out, gmat, len_super_int)) == 0
+
         HandyG.G_batch!(out, zmat, yvec, len_flat)
         @test (@allocated HandyG.G_batch!(out, zmat, yvec, len_flat)) == 0
+
+        HandyG.G_batch!(out, zmat, yvec, len_flat_int)
+        @test (@allocated HandyG.G_batch!(out, zmat, yvec, len_flat_int)) == 0
     end
 end

@@ -10,7 +10,7 @@ After Julia compilation warmup, the following are designed to run without heap a
 
 For high-throughput use, prefer `G_batch!` and reuse all buffers.
 
-Convenience overloads that accept `m`/`len` as `Vector{Int}` (or `i0` as `Vector{Int}`) allocate temporary conversion buffers; avoid them in performance-critical loops.
+Convenience overloads that accept `m`/`len` as `Vector{Int}` (or `i0` as `Vector{Int}`) may allocate conversion buffers; avoid them in performance-critical loops and prefer `Cint` / `Int8` inputs.
 
 ## Input layout
 
