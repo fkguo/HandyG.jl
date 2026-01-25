@@ -1,0 +1,15 @@
+# Julia
+/Manifest.toml
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+*.ji
+
+# Artifacts / builds (local dev)
+/deps/usr/
+/deps/build/
+
+# OS/editor
+.DS_Store
+.vscode/
+
