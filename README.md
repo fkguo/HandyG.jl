@@ -27,13 +27,6 @@ using Pkg
 Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
 ```
 
-For private access via SSH:
-
-```julia
-using Pkg
-Pkg.add(url="git@github.com:fkguo/HandyG.jl.git")
-```
-
 ### Provide `libhandyg`
 
 `HandyG.jl` requires the upstream shared library `libhandyg` to be available at runtime.
