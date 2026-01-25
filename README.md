@@ -99,6 +99,10 @@ G(Cint[1, 2], [1.0, 0.5], 0.3)
 m = [1, 2]
 G(m, [1.0, 0.5], 0.3)
 
+# fastest: preconvert to `Cint` once (avoids per-call conversion)
+const m_c = Cint.(m)
+G(m_c, [1.0, 0.5], 0.3)
+
 # explicit i0± prescription (SoA)
 z = ComplexF64[1, 0, 5]
 z_i0 = Int8[+1, +1, +1]

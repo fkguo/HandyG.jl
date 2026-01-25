@@ -60,6 +60,22 @@ Notes:
 - For absolute clarity and predictability in tight loops, passing `Cint[...]` / `Vector{Cint}`
   is still the “gold standard”, but the above pattern is a good default for ergonomic code.
 
+## Alternative (fastest): preconvert once to `Cint`
+
+If `m`/`len` are reused many times and rarely change, the lowest-overhead approach is to convert
+them once up front and then call the `Cint` methods directly:
+
+```julia
+using HandyG
+
+const m_int = [1, 2]
+const m = Cint.(m_int)  # one-time allocation
+
+val = G(m, [1.0, 0.5], 0.3)
+```
+
+This avoids the per-call conversion work entirely.
+
 ## Input layout
 
 For batch calls, use fixed-depth `(depth_max, N)` matrices with a `len::Vector{Cint}` per column.
