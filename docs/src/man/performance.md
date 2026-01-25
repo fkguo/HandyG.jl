@@ -10,7 +10,55 @@ After Julia compilation warmup, the following are designed to run without heap a
 
 For high-throughput use, prefer `G_batch!` and reuse all buffers.
 
-Convenience overloads that accept `m`/`len` as `Vector{Int}` (or `i0` as `Vector{Int}`) may allocate conversion buffers; avoid them in performance-critical loops and prefer `Cint` / `Int8` inputs.
+## Recommended default: non-`Cint` integers with zero allocations (after warmup)
+
+The C ABI expects `m`/`len` as `Cint` (`Int32`) for correctness. For convenience, `HandyG.jl`
+accepts `Vector{Int}` (or other integer types) and converts them internally.
+
+To keep this conversion allocation-free in steady state:
+
+- Make the integer arrays persistent (e.g. `const` globals or reused buffers)
+- Call the relevant function once during initialization to let internal scratch buffers size
+
+Example (condensed form):
+
+```julia
+using HandyG
+
+const m = [1, 2]               # Vector{Int}
+const z = [1.0, 0.5]
+const y = 0.3
+
+# warmup (compiles + sizes internal scratch)
+G(m, z, y)
+
+# steady-state: no allocations from the `m` conversion
+@assert (@allocated G(m, z, y)) == 0
+```
+
+Example (batch `len`):
+
+```julia
+using HandyG
+
+const len = [4, 3]   # Vector{Int}
+
+# warmup
+out = Vector{ComplexF64}(undef, 2)
+g = zeros(Float64, 4, 2)
+G_batch!(out, g, len)
+
+# steady-state
+@assert (@allocated G_batch!(out, g, len)) == 0
+```
+
+Notes:
+
+- If the internal scratch buffer needs to grow (e.g. you later pass a longer `m`/`len`), a
+  one-time allocation can occur at that moment. Pre-warm with the maximum expected length to
+  avoid this.
+- For absolute clarity and predictability in tight loops, passing `Cint[...]` / `Vector{Cint}`
+  is still the “gold standard”, but the above pattern is a good default for ergonomic code.
 
 ## Input layout
 

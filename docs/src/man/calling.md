@@ -44,7 +44,7 @@ y = 0.3
 val = G(m, z, y)
 ```
 
-For convenience you may also pass `m::Vector{Int}` (or other integer types); `HandyG.jl` will convert to the C-ABI element type (`Cint`). This conversion may allocate when the internal scratch buffer grows. For allocation-free hot paths, prefer `Cint[...]`.
+For convenience you may also pass `m::Vector{Int}` (or other integer types); `HandyG.jl` converts to the C-ABI element type (`Cint`) using an internal scratch buffer. After warmup, this can be allocation-free; see [Manual → Performance Notes](performance.md).
 
 ## In-place scalar evaluation: `G!`
 

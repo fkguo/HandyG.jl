@@ -45,7 +45,8 @@ Pkg.add(url="git@github.com:fkguo/HandyG.jl.git")
   ```
   Override the upstream source path:
   ```bash
-  HANDYG_SRC=/path/to/handyG/src bash deps/build_local.sh
+  export HANDYG_SRC=/path/to/handyG/src
+  bash deps/build_local.sh
   ```
 - **Point to an existing build:**
   ```bash

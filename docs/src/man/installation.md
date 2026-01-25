@@ -32,7 +32,8 @@ bash deps/build_local.sh
 If your upstream source lives elsewhere:
 
 ```bash
-HANDYG_SRC=/path/to/handyG/src bash deps/build_local.sh
+export HANDYG_SRC=/path/to/handyG/src
+bash deps/build_local.sh
 ```
 
 ### Option B: `HANDYG_LIB` environment variable
