@@ -47,7 +47,7 @@ Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
   export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
   export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
   ```
-- **Planned:** BinaryBuilder/JLL distribution (and Yggdrasil).
+- **In progress:** BinaryBuilder/JLL distribution via Yggdrasil (PR: https://github.com/JuliaPackaging/Yggdrasil/pull/13008).
 
 ## Status
 
@@ -59,7 +59,7 @@ Implemented (double precision):
 
 Planned:
 
-- Cross-platform binaries via BinaryBuilder/JLL (and Yggdrasil)
+- Cross-platform binaries via BinaryBuilder/JLL (pending Yggdrasil merge)
 - Quad builds (`--quad`) (temporary strategy: Windows may remain double-only)
 
 ## Library discovery
