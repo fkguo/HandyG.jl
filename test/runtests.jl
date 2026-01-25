@@ -22,6 +22,9 @@ using HandyG
         zc = [1.0, 0.5]
         @test HandyG.G(m, zc, y) ≈ HandyG.G(g1) atol = 1e-12 rtol = 0
 
+        # Convenience integer inputs (may allocate conversion buffers)
+        @test HandyG.G([1, 2], zc, y) ≈ HandyG.G(m, zc, y) atol = 1e-12 rtol = 0
+
         # i0 prescription (manual SoA)
         x = 0.3
         zvals = ComplexF64[1, 0, 5]
@@ -33,6 +36,9 @@ using HandyG
         z_i0 = Int8[-1, 1, 1]
         res5 = HandyG.G(HandyG.inum(zvals, z_i0), HandyG.inum(yval, 1))
         @test res5 ≈ (-0.9612791924920746 + 0.662887910801087im) atol = 1e-12 rtol = 0
+
+        # Convenience i0 element type (may allocate)
+        @test HandyG.G(HandyG.inum(zvals, [-1, 1, 1]), HandyG.inum(yval, 1)) ≈ res5 atol = 1e-12 rtol = 0
 
         # condensed i0
         zc2 = ComplexF64[1, 5]
@@ -51,12 +57,22 @@ using HandyG
         @test out[1] ≈ HandyG.G(g1) atol = 1e-12 rtol = 0
         @test out[2] ≈ HandyG.G(g2) atol = 1e-12 rtol = 0
 
+        # Convenience len element type (may allocate)
+        HandyG.G_batch!(out, gmat, [4, 3])
+        @test out[1] ≈ HandyG.G(g1) atol = 1e-12 rtol = 0
+        @test out[2] ≈ HandyG.G(g2) atol = 1e-12 rtol = 0
+
         zmat = zeros(Float64, 3, 2)
         zmat[:, 1] = z
         zmat[1:2, 2] = [1.0, 2.0]
         yvec = ComplexF64[y, 1.0]
         len_flat = Cint[3, 2]
         HandyG.G_batch!(out, zmat, yvec, len_flat)
+        @test out[1] ≈ HandyG.G(z, y) atol = 1e-12 rtol = 0
+        @test out[2] ≈ HandyG.G([1.0, 2.0], 1.0) atol = 1e-12 rtol = 0
+
+        # Convenience len element type (may allocate)
+        HandyG.G_batch!(out, zmat, yvec, [3, 2])
         @test out[1] ≈ HandyG.G(z, y) atol = 1e-12 rtol = 0
         @test out[2] ≈ HandyG.G([1.0, 2.0], 1.0) atol = 1e-12 rtol = 0
 

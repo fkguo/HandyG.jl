@@ -56,4 +56,11 @@ end
     return libpath
 end
 
+"""
+    libhandyg_path() -> String
+
+Return the filesystem path of the loaded `libhandyg` shared library.
+
+Returns `\"\"` if the library has not been loaded yet.
+"""
 libhandyg_path() = _LIB_PATH[]

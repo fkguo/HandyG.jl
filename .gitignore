@@ -9,7 +9,10 @@
 /deps/usr/
 /deps/build/
 
+# Documentation
+/docs/build/
+/docs/Manifest.toml
+
 # OS/editor
 .DS_Store
 .vscode/
-
