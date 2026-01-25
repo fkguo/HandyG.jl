@@ -1,18 +1,17 @@
 module HandyG
 
-export INum, inum
+using Artifacts
+using Libdl
 
-struct INum{T<:Real}
-    c::Complex{T}
-    i0::Int8
-end
+export INum, INumVec, INumMat, inum
+export clearcache, clearcache!
+export set_mpldelta!, set_lidelta!, set_hoelder_circle!, set_options!
+export G, G!, G_batch!
 
-const I0_PLUS = Int8(+1)
-const I0_MINUS = Int8(-1)
-const I0_DEFAULT = I0_PLUS
-
-inum(z::Complex{T}, i0::Integer=I0_DEFAULT) where {T<:Real} = INum{T}(z, Int8(i0))
-inum(x::Real, i0::Integer=I0_DEFAULT) = INum{typeof(x)}(complex(x, zero(x)), Int8(i0))
+include("types.jl")
+include("lib.jl")
+include("ffi.jl")
+include("api.jl")
 
 end # module HandyG
 
