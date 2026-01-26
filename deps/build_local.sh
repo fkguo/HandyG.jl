@@ -16,6 +16,26 @@ if [[ -z "${HANDYG_SRC}" || ! -d "${HANDYG_SRC}" ]]; then
   exit 1
 fi
 
+gpl_f90="${HANDYG_SRC}/gpl_module.f90"
+maths_f90="${HANDYG_SRC}/maths_functions.f90"
+if [[ ! -f "${gpl_f90}" || ! -f "${maths_f90}" ]]; then
+  echo "ERROR: HANDYG_SRC must point at the upstream 'src' folder containing gpl_module.f90 and maths_functions.f90."
+  exit 1
+fi
+
+# A small compatibility check to avoid hard-to-decipher linker errors when users
+# point HANDYG_SRC at a different fork/branch.
+if ! grep -qiE 'subroutine[[:space:]]+clear_g_cache' "${gpl_f90}"; then
+  echo "ERROR: Incompatible handyG source detected (missing clear_g_cache in gpl_module.f90)."
+  echo "Please use mule-tools/handyg tag v0.2.0b (commit 756ab007b4655e0b37244dd0dcc072f3ae7f4bc8) or a compatible newer version."
+  exit 1
+fi
+if ! grep -qiE 'subroutine[[:space:]]+clear_poly_cache' "${maths_f90}"; then
+  echo "ERROR: Incompatible handyG source detected (missing CLEAR_POLY_CACHE in maths_functions.f90)."
+  echo "Please use mule-tools/handyg tag v0.2.0b (commit 756ab007b4655e0b37244dd0dcc072f3ae7f4bc8) or a compatible newer version."
+  exit 1
+fi
+
 FC="${FC:-gfortran}"
 
 BUILD_DIR="${ROOT_DIR}/deps/build/double"
@@ -50,4 +70,3 @@ else
 fi
 
 echo "==> done: ${out}"
-

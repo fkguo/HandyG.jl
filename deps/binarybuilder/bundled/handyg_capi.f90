@@ -2,30 +2,18 @@ module handyg_capi
   use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_signed_char, c_f_pointer
   use globals, only: prec, zero, set_options
   use ieps, only: inum, di0
-  use gpl_module, only: G_flat, G_condensed
-  implicit none
-#ifdef __GFORTRAN__
-  interface
-    subroutine gpl_clear_g_cache() bind(C, name="__gpl_module_MOD_clear_g_cache")
-    end subroutine gpl_clear_g_cache
+  use gpl_module, only: G_flat, G_condensed, clear_g_cache
 #ifndef NOCACHE
-    subroutine maths_clear_poly_cache() bind(C, name="__maths_functions_MOD_clear_poly_cache")
-    end subroutine maths_clear_poly_cache
+  use maths_functions, only: clear_poly_cache
 #endif
-  end interface
-#endif
+  implicit none
 contains
 
   subroutine handyg_clearcache() bind(C, name="handyg_clearcache")
-#ifdef __GFORTRAN__
 #ifndef NOCACHE
-    call maths_clear_poly_cache()
+    call clear_poly_cache()
 #endif
-    call gpl_clear_g_cache()
-#else
-    ! Best-effort fallback for non-gfortran builds; some upstream variants may not
-    ! export a public cache-clear routine.
-#endif
+    call clear_g_cache()
   end subroutine handyg_clearcache
 
   subroutine handyg_set_mpldelta(val_ptr) bind(C, name="handyg_set_mpldelta")
