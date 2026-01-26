@@ -36,6 +36,7 @@ Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
   # expects the upstream handyG repo as a sibling: ../handyg
   bash deps/build_local.sh
   ```
+  Tested with upstream tag `v0.2.0b` (commit `756ab007b4655e0b37244dd0dcc072f3ae7f4bc8`).
   Override the upstream source path:
   ```bash
   export HANDYG_SRC=/path/to/handyG/src

@@ -8,12 +8,19 @@ module handyg_capi
   interface
     subroutine gpl_clear_g_cache() bind(C, name="__gpl_module_MOD_clear_g_cache")
     end subroutine gpl_clear_g_cache
+#ifndef NOCACHE
+    subroutine maths_clear_poly_cache() bind(C, name="__maths_functions_MOD_clear_poly_cache")
+    end subroutine maths_clear_poly_cache
+#endif
   end interface
 #endif
 contains
 
   subroutine handyg_clearcache() bind(C, name="handyg_clearcache")
 #ifdef __GFORTRAN__
+#ifndef NOCACHE
+    call maths_clear_poly_cache()
+#endif
     call gpl_clear_g_cache()
 #else
     ! Best-effort fallback for non-gfortran builds; some upstream variants may not

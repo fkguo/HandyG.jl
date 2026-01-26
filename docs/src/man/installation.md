@@ -22,6 +22,8 @@ This repo includes a helper script that builds a development copy into `deps/usr
 bash deps/build_local.sh
 ```
 
+Tested with upstream tag `v0.2.0b` (commit `756ab007b4655e0b37244dd0dcc072f3ae7f4bc8`).
+
 If your upstream source lives elsewhere:
 
 ```bash
