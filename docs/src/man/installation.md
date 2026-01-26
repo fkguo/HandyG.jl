@@ -39,9 +39,15 @@ export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
 export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
 ```
 
-### Option C: JLL (BinaryBuilder/Yggdrasil) (planned)
+### Option C: JLL (BinaryBuilder/Yggdrasil) (in progress)
 
-The intended end state is a `*_jll` package published through Yggdrasil so end users do not need a Fortran toolchain. Until that is in place, use Option A or B.
+We are working towards a `HandyG_jll` package published through Yggdrasil so end users do not
+need a Fortran toolchain.
+
+- Yggdrasil PR (CI green): https://github.com/JuliaPackaging/Yggdrasil/pull/13008
+
+Once that is merged and released, this will become the recommended install path. Until then,
+use Option A or B.
 
 ## Build the docs locally
 
