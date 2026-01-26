@@ -2,12 +2,25 @@ module handyg_capi
   use, intrinsic :: iso_c_binding, only: c_ptr, c_int, c_signed_char, c_f_pointer
   use globals, only: prec, zero, set_options
   use ieps, only: inum, di0
-  use gpl_module, only: G_flat, G_condensed, clearcache
+  use gpl_module, only: G_flat, G_condensed
+#ifndef __GFORTRAN__
+  use gpl_module, only: clearcache
+#endif
   implicit none
+#ifdef __GFORTRAN__
+  interface
+    subroutine gpl_clearcache() bind(C, name="__gpl_module_MOD_clearcache")
+    end subroutine gpl_clearcache
+  end interface
+#endif
 contains
 
   subroutine handyg_clearcache() bind(C, name="handyg_clearcache")
+#ifdef __GFORTRAN__
+    call gpl_clearcache()
+#else
     call clearcache()
+#endif
   end subroutine handyg_clearcache
 
   subroutine handyg_set_mpldelta(val_ptr) bind(C, name="handyg_set_mpldelta")
