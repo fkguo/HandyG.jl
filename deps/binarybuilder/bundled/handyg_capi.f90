@@ -3,23 +3,21 @@ module handyg_capi
   use globals, only: prec, zero, set_options
   use ieps, only: inum, di0
   use gpl_module, only: G_flat, G_condensed
-#ifndef __GFORTRAN__
-  use gpl_module, only: clearcache
-#endif
   implicit none
 #ifdef __GFORTRAN__
   interface
-    subroutine gpl_clearcache() bind(C, name="__gpl_module_MOD_clearcache")
-    end subroutine gpl_clearcache
+    subroutine gpl_clear_g_cache() bind(C, name="__gpl_module_MOD_clear_g_cache")
+    end subroutine gpl_clear_g_cache
   end interface
 #endif
 contains
 
   subroutine handyg_clearcache() bind(C, name="handyg_clearcache")
 #ifdef __GFORTRAN__
-    call gpl_clearcache()
+    call gpl_clear_g_cache()
 #else
-    call clearcache()
+    ! Best-effort fallback for non-gfortran builds; some upstream variants may not
+    ! export a public cache-clear routine.
 #endif
   end subroutine handyg_clearcache
 
