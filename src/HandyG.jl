@@ -13,8 +13,7 @@ See `docs/src/` for the user manual.
 """
 module HandyG
 
-using Artifacts
-using Libdl
+import HandyG_jll
 
 export INum, INumVec, INumMat, inum
 export clearcache, clearcache!

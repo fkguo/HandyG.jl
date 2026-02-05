@@ -1,4 +1,0 @@
-# HandyG.jl artifacts
-#
-# By default, `HandyG.jl` uses `HandyG_jll` for prebuilt `libhandyg` binaries.
-# This file is reserved for advanced overrides (e.g. custom `libhandyg` artifacts).

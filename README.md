@@ -27,30 +27,8 @@ using Pkg
 Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
 ```
 
-### Provide `libhandyg`
-
-`HandyG.jl` requires the upstream shared library `libhandyg` to be available at runtime.
-
-**Recommended (no Fortran toolchain):** `HandyG.jl` depends on `HandyG_jll`, which provides
-prebuilt `libhandyg` binaries via BinaryBuilder/Yggdrasil. In most cases this “just works”.
-
-- **Local build (developer workflow):**
-  ```bash
-  # expects the upstream handyG repo as a sibling: ../handyg
-  bash deps/build_local.sh
-  ```
-  Tested with upstream tag `v0.2.0b` (commit `756ab007b4655e0b37244dd0dcc072f3ae7f4bc8`).
-  Override the upstream source path:
-  ```bash
-  export HANDYG_SRC=/path/to/handyG/src
-  bash deps/build_local.sh
-  ```
-- **Point to an existing build:**
-  ```bash
-  export HANDYG_LIB=/abs/path/to/libhandyg.so    # Linux
-  export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
-  export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
-  ```
+`HandyG.jl` depends on `HandyG_jll`, which provides prebuilt `libhandyg` binaries via
+BinaryBuilder/Yggdrasil, so end users do not need a local Fortran toolchain.
 
 ## Status
 
@@ -64,16 +42,6 @@ Implemented (double precision):
 Planned:
 
 - Quad builds (`--quad`) (temporary strategy: Windows may remain double-only)
-
-## Library discovery
-
-At runtime `HandyG.jl` looks for `libhandyg` in this order:
-
-1. `ENV["HANDYG_LIB"]` (absolute path to `libhandyg.so/.dylib/.dll`)
-2. Local dev build: `deps/usr/lib/` (if you ran `bash deps/build_local.sh`)
-3. `HandyG_jll` (BinaryBuilder/Yggdrasil)
-4. An artifact entry in `Artifacts.toml` (advanced override)
-5. System library search paths
 
 ## Quick usage examples
 

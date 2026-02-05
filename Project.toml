@@ -3,9 +3,7 @@ uuid = "a852a908-0650-4c17-9fbe-e73c879a033a"
 version = "0.1.0"
 
 [deps]
-Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 HandyG_jll = "176cd8ec-bef4-5d25-a3d7-2797db4e996d"
-Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [compat]
 HandyG_jll = "0.2.0"
