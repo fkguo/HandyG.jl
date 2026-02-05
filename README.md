@@ -22,6 +22,13 @@ julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.in
 
 This package can be installed directly from GitHub:
 
+```text
+julia> ]
+pkg> add https://github.com/fkguo/HandyG.jl
+```
+
+or:
+
 ```julia
 using Pkg
 Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")

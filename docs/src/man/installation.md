@@ -6,6 +6,13 @@
 
 From a Git repository (GitHub/GitLab/…):
 
+```text
+julia> ]
+pkg> add https://github.com/fkguo/HandyG.jl
+```
+
+or:
+
 ```julia
 using Pkg
 Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
