@@ -6,7 +6,7 @@ This documentation focuses on:
 
 - A Julia API that stays close to the upstream Fortran calling conventions
 - Allocation-free hot paths (`G`, `G!`, `G_batch!`) after warmup
-- Cross-platform binary distribution via BinaryBuilder/JLL (work in progress)
+- Cross-platform binaries via `HandyG_jll` (BinaryBuilder/Yggdrasil)
 
 ## Where to start
 

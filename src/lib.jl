@@ -1,6 +1,8 @@
 const _LIB_PATH = Ref{String}("")
 const _LIB_HANDLE = Ref{Ptr{Nothing}}(C_NULL)
 
+const _HANDYG_JLL_PKGID = Base.PkgId(Base.UUID("176cd8ec-bef4-5d25-a3d7-2797db4e996d"), "HandyG_jll")
+
 @inline function _lib_filename()
     if Sys.iswindows()
         return "libhandyg.dll"
@@ -11,10 +13,28 @@ const _LIB_HANDLE = Ref{Ptr{Nothing}}(C_NULL)
     end
 end
 
+@inline function _try_libhandyg_from_jll()
+    try
+        jll = Base.require(_HANDYG_JLL_PKGID)
+        libpath = String(getproperty(jll, :libhandyg))
+        isfile(libpath) ? libpath : nothing
+    catch
+        nothing
+    end
+end
+
 function _find_libhandyg()
     if haskey(ENV, "HANDYG_LIB")
         return ENV["HANDYG_LIB"]
     end
+
+    local_dev = normpath(joinpath(@__DIR__, "..", "deps", "usr", "lib", _lib_filename()))
+    if isfile(local_dev)
+        return local_dev
+    end
+
+    jll = _try_libhandyg_from_jll()
+    jll === nothing || return jll
 
     artifacts_toml = normpath(joinpath(@__DIR__, "..", "Artifacts.toml"))
     if isfile(artifacts_toml)
@@ -33,17 +53,12 @@ function _find_libhandyg()
         end
     end
 
-    local_dev = normpath(joinpath(@__DIR__, "..", "deps", "usr", "lib", _lib_filename()))
-    if isfile(local_dev)
-        return local_dev
-    end
-
     found = Libdl.find_library(["handyg", "libhandyg"], String[])
     if !isempty(found)
         return found
     end
 
-    error("HandyG: libhandyg not found. Provide an artifact in `Artifacts.toml`, set ENV[\"HANDYG_LIB\"], or run `bash deps/build_local.sh` to build a dev copy into `deps/usr/lib`.")
+    error("HandyG: libhandyg not found. Install `HandyG_jll` (normally pulled in automatically), set ENV[\"HANDYG_LIB\"], or build a dev copy via `bash deps/build_local.sh`.")
 end
 
 @inline function _ensure_libhandyg!()

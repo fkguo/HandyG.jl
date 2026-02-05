@@ -13,7 +13,19 @@ Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
 
 ## Provide `libhandyg`
 
-### Option A: local build (developer workflow)
+### Option A: JLL (BinaryBuilder/Yggdrasil) (recommended)
+
+`HandyG.jl` depends on `HandyG_jll`, which provides prebuilt `libhandyg` binaries for the supported
+platforms. In most cases you do **not** need a local Fortran toolchain.
+
+If you want to install the JLL explicitly:
+
+```julia
+using Pkg
+Pkg.add("HandyG_jll")
+```
+
+### Option B: local build (developer workflow)
 
 This repo includes a helper script that builds a development copy into `deps/usr/lib/`:
 
@@ -31,7 +43,7 @@ export HANDYG_SRC=/path/to/handyG/src
 bash deps/build_local.sh
 ```
 
-### Option B: `HANDYG_LIB` environment variable
+### Option C: `HANDYG_LIB` environment variable
 
 You can point directly at a prebuilt library:
 
@@ -40,16 +52,6 @@ export HANDYG_LIB=/abs/path/to/libhandyg.so   # Linux
 export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
 export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
 ```
-
-### Option C: JLL (BinaryBuilder/Yggdrasil) (in progress)
-
-We are working towards a `HandyG_jll` package published through Yggdrasil so end users do not
-need a Fortran toolchain.
-
-- Yggdrasil PR (CI green): https://github.com/JuliaPackaging/Yggdrasil/pull/13008
-
-Once that is merged and released, this will become the recommended install path. Until then,
-use Option A or B.
 
 ## Build the docs locally
 

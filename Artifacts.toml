@@ -1,5 +1,4 @@
 # HandyG.jl artifacts
 #
-# This file will be populated once we start publishing prebuilt `libhandyg`
-# tarballs (initially via GitHub Releases, later via Yggdrasil-generated JLL).
-
+# By default, `HandyG.jl` uses `HandyG_jll` for prebuilt `libhandyg` binaries.
+# This file is reserved for advanced overrides (e.g. custom `libhandyg` artifacts).

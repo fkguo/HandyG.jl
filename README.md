@@ -31,6 +31,9 @@ Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
 
 `HandyG.jl` requires the upstream shared library `libhandyg` to be available at runtime.
 
+**Recommended (no Fortran toolchain):** `HandyG.jl` depends on `HandyG_jll`, which provides
+prebuilt `libhandyg` binaries via BinaryBuilder/Yggdrasil. In most cases this “just works”.
+
 - **Local build (developer workflow):**
   ```bash
   # expects the upstream handyG repo as a sibling: ../handyg
@@ -48,7 +51,6 @@ Pkg.add(url="https://github.com/fkguo/HandyG.jl.git")
   export HANDYG_LIB=/abs/path/to/libhandyg.dylib # macOS
   export HANDYG_LIB=C:\\path\\to\\libhandyg.dll  # Windows
   ```
-- **In progress:** BinaryBuilder/JLL distribution via Yggdrasil (CI green; awaiting merge): https://github.com/JuliaPackaging/Yggdrasil/pull/13008.
 
 ## Status
 
@@ -57,10 +59,10 @@ Implemented (double precision):
 - Scalar calls: `G(...)` and `G!(out, ...)` (superflat / flat / condensed)
 - Batch calls: `G_batch!(out, ...)` (fixed-depth column-major matrices + `len`)
 - Explicit `i0±` prescription: `inum(...)` (structure-of-arrays)
+- Cross-platform binaries via `HandyG_jll` (BinaryBuilder/Yggdrasil)
 
 Planned:
 
-- Cross-platform binaries via BinaryBuilder/JLL (awaiting Yggdrasil merge)
 - Quad builds (`--quad`) (temporary strategy: Windows may remain double-only)
 
 ## Library discovery
@@ -68,9 +70,10 @@ Planned:
 At runtime `HandyG.jl` looks for `libhandyg` in this order:
 
 1. `ENV["HANDYG_LIB"]` (absolute path to `libhandyg.so/.dylib/.dll`)
-2. An artifact entry in `Artifacts.toml` (reserved for future JLL integration)
-3. Local dev build: `deps/usr/lib/`
-4. System library search paths
+2. Local dev build: `deps/usr/lib/` (if you ran `bash deps/build_local.sh`)
+3. `HandyG_jll` (BinaryBuilder/Yggdrasil)
+4. An artifact entry in `Artifacts.toml` (advanced override)
+5. System library search paths
 
 ## Quick usage examples
 
