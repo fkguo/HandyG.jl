@@ -46,9 +46,9 @@ Implemented (double precision):
 - Explicit `i0±` prescription: `inum(...)` (structure-of-arrays)
 - Cross-platform binaries via `HandyG_jll` (BinaryBuilder/Yggdrasil)
 
-Planned:
+Not supported:
 
-- Quad builds (`--quad`) (temporary strategy: Windows may remain double-only)
+- Quad builds (`--quad`): this wrapper is currently double-only (`Float64` / `ComplexF64`)
 
 ## Quick usage examples
 
