@@ -10,6 +10,7 @@ makedocs(
         "Home" => "index.md",
         "Manual" => [
             "Installation" => "man/installation.md",
+            "Definitions & Notation" => "man/definitions.md",
             "Calling Conventions" => "man/calling.md",
             "i0 Prescription" => "man/i0.md",
             "Batch API" => "man/batch.md",

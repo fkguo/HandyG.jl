@@ -11,6 +11,7 @@ This documentation focuses on:
 ## Where to start
 
 - Installation: see [Manual → Installation](man/installation.md)
+- Definitions and GPL notation: see [Manual → Definitions & Notation](man/definitions.md)
 - Calling conventions: see [Manual → Calling Conventions](man/calling.md)
 - `i0±` prescription: see [Manual → i0 Prescription](man/i0.md)
 - Batch API for large workloads: see [Manual → Batch API](man/batch.md)

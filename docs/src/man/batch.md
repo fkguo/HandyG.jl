@@ -47,6 +47,38 @@ out = Vector{ComplexF64}(undef, N)
 G_batch!(out, z, y, len)
 ```
 
+## Condensed batch
+
+Condensed (zero-compressed) inputs use a matrix of partial weights `m` alongside
+the parameter matrix `z`. Both have the same shape `(depth_max, N)`, and `len`
+gives the active depth per column.
+
+```julia
+using HandyG
+
+depth_max = 2
+N = 2
+
+m = zeros(Cint, depth_max, N)
+z = zeros(Float64, depth_max, N)
+len = Cint[2, 1]
+y = fill(ComplexF64(0.3, 0.0), N)
+
+# Rows beyond len[j] in each column are ignored by the library.
+#
+# Column 1: m=[1,2], z=[1.0,0.5]  => G_{1,2}(1.0,0.5; 0.3) = G(1.0,0,0.5; 0.3)
+m[:, 1] = Cint[1, 2]
+z[:, 1] = [1.0, 0.5]
+
+# Column 2: m=[3], z=[2.0]        => G_3(2.0; 0.3) = G(0,0,2.0; 0.3)
+m[1, 2] = Cint(3)
+z[1, 2] = 2.0
+
+out = Vector{ComplexF64}(undef, N)
+
+G_batch!(out, m, z, y, len)
+```
+
 ## Notes
 
 - Inputs must be **contiguous column-major** (stride-1 first dimension, contiguous columns). Views like `@view` may fail the checks unless they are contiguous.

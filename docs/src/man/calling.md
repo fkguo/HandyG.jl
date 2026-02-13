@@ -35,7 +35,7 @@ val = G(z, y)
 
 ## Condensed form
 
-In condensed form, `m` encodes runs of trailing zeros. (See the upstream paper/README for the definition; this wrapper follows the upstream semantics.)
+In condensed form, `m` contains the partial weights (where each `m_i` implies `m_i - 1` preceding zeros before `z_i`). See [Manual → Definitions & Notation](definitions.md) for the precise definition; this wrapper follows the upstream semantics.
 
 ```julia
 m = Cint[1, 2]
