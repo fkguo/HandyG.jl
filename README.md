@@ -10,6 +10,7 @@ Paper: https://arxiv.org/abs/1909.01656
 ## Documentation
 
 - Online docs (dev): https://fkguo.github.io/HandyG.jl/dev/
+- GPL definitions / condensed notation: https://fkguo.github.io/HandyG.jl/dev/man/definitions/
 - Manual source: `docs/src/index.md`
 
 Build HTML docs locally:
