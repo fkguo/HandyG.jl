@@ -4,14 +4,21 @@
 
 ## Install the Julia package
 
-From a Git repository (GitHub/GitLab/…):
+From Julia General Registry:
 
 ```text
 julia> ]
-pkg> add https://github.com/fkguo/HandyG.jl
+pkg> add HandyG
 ```
 
 or:
+
+```julia
+using Pkg
+Pkg.add("HandyG")
+```
+
+To install from the latest GitHub repository state (for development):
 
 ```julia
 using Pkg

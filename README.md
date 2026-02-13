@@ -20,14 +20,21 @@ julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.in
 
 ## Installation
 
-This package can be installed directly from GitHub:
+`HandyG.jl` is registered in Julia General Registry.
 
 ```text
 julia> ]
-pkg> add https://github.com/fkguo/HandyG.jl
+pkg> add HandyG
 ```
 
 or:
+
+```julia
+using Pkg
+Pkg.add("HandyG")
+```
+
+For development from the latest repository state:
 
 ```julia
 using Pkg
