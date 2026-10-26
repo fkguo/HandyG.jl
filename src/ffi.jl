@@ -23,14 +23,14 @@ end
 @inline function _g_superflat!(out::Ref{ComplexF64}, g::StridedVector{Float64})
     _ensure_libhandyg!()
     _check_strided_vector(g)
-    ccall((:handyg_g_superflat_r, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{Float64}, Cint), out, g, Cint(length(g)))
+    ccall((:handyg_g_superflat_r, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{Float64}, Cint), out, g, Cint(length(g)))
     return nothing
 end
 
 @inline function _g_superflat!(out::Ref{ComplexF64}, g::StridedVector{ComplexF64})
     _ensure_libhandyg!()
     _check_strided_vector(g)
-    ccall((:handyg_g_superflat_c, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Cint), out, g, Cint(length(g)))
+    ccall((:handyg_g_superflat_c, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Cint), out, g, Cint(length(g)))
     return nothing
 end
 
@@ -38,7 +38,7 @@ end
     _ensure_libhandyg!()
     _check_strided_vector(z)
     yref = _scratch_y(y)
-    ccall((:handyg_g_flat_rc, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{Float64}, Cint, Ref{ComplexF64}), out, z, Cint(length(z)), yref)
+    ccall((:handyg_g_flat_rc, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{Float64}, Cint, Ref{ComplexF64}), out, z, Cint(length(z)), yref)
     return nothing
 end
 
@@ -46,7 +46,7 @@ end
     _ensure_libhandyg!()
     _check_strided_vector(z)
     yref = _scratch_y(y)
-    ccall((:handyg_g_flat_cc, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Cint, Ref{ComplexF64}), out, z, Cint(length(z)), yref)
+    ccall((:handyg_g_flat_cc, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Cint, Ref{ComplexF64}), out, z, Cint(length(z)), yref)
     return nothing
 end
 
@@ -55,7 +55,7 @@ end
     _check_strided_vector(z.c)
     _check_strided_vector(z.i0)
     yref = _scratch_y(y.c)
-    ccall((:handyg_g_flat_i0, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Ref{ComplexF64}, Int8), out, z.c, z.i0, Cint(length(z.c)), yref, y.i0)
+    ccall((:handyg_g_flat_i0, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Ref{ComplexF64}, Int8), out, z.c, z.i0, Cint(length(z.c)), yref, y.i0)
     return nothing
 end
 
@@ -65,7 +65,7 @@ end
     _check_strided_vector(z)
     length(m) == length(z) || throw(ArgumentError("m and z must have the same length"))
     yref = _scratch_y(y)
-    ccall((:handyg_g_condensed_rc, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{Float64}, Cint, Ref{ComplexF64}), out, m, z, Cint(length(z)), yref)
+    ccall((:handyg_g_condensed_rc, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{Float64}, Cint, Ref{ComplexF64}), out, m, z, Cint(length(z)), yref)
     return nothing
 end
 
@@ -75,7 +75,7 @@ end
     _check_strided_vector(z)
     length(m) == length(z) || throw(ArgumentError("m and z must have the same length"))
     yref = _scratch_y(y)
-    ccall((:handyg_g_condensed_cc, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Cint, Ref{ComplexF64}), out, m, z, Cint(length(z)), yref)
+    ccall((:handyg_g_condensed_cc, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Cint, Ref{ComplexF64}), out, m, z, Cint(length(z)), yref)
     return nothing
 end
 
@@ -86,7 +86,7 @@ end
     _check_strided_vector(z.i0)
     length(m) == length(z.c) || throw(ArgumentError("m and z must have the same length"))
     yref = _scratch_y(y.c)
-    ccall((:handyg_g_condensed_i0, _LIB_PATH[]), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Ref{ComplexF64}, Int8), out, m, z.c, z.i0, Cint(length(z.c)), yref, y.i0)
+    ccall((:handyg_g_condensed_i0, HandyG_jll.libhandyg), Cvoid, (Ref{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Ref{ComplexF64}, Int8), out, m, z.c, z.i0, Cint(length(z.c)), yref, y.i0)
     return nothing
 end
 
@@ -95,7 +95,7 @@ end
     _check_strided_vector(out)
     _check_colmajor_matrix(g)
     _check_strided_vector(len)
-    ccall((:handyg_g_superflat_batch_r, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{Float64}, Cint, Cint, Ptr{Cint}), out, g, Cint(size(g, 1)), Cint(size(g, 2)), len)
+    ccall((:handyg_g_superflat_batch_r, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{Float64}, Cint, Cint, Ptr{Cint}), out, g, Cint(size(g, 1)), Cint(size(g, 2)), len)
     return out
 end
 
@@ -104,7 +104,7 @@ end
     _check_strided_vector(out)
     _check_colmajor_matrix(g)
     _check_strided_vector(len)
-    ccall((:handyg_g_superflat_batch_c, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}), out, g, Cint(size(g, 1)), Cint(size(g, 2)), len)
+    ccall((:handyg_g_superflat_batch_c, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}), out, g, Cint(size(g, 1)), Cint(size(g, 2)), len)
     return out
 end
 
@@ -114,7 +114,7 @@ end
     _check_colmajor_matrix(z)
     _check_strided_vector(y)
     _check_strided_vector(len)
-    ccall((:handyg_g_flat_batch_rc, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{Float64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
+    ccall((:handyg_g_flat_batch_rc, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{Float64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
     return out
 end
 
@@ -124,7 +124,7 @@ end
     _check_colmajor_matrix(z)
     _check_strided_vector(y)
     _check_strided_vector(len)
-    ccall((:handyg_g_flat_batch_cc, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
+    ccall((:handyg_g_flat_batch_cc, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
     return out
 end
 
@@ -136,7 +136,7 @@ end
     _check_strided_vector(y.c)
     _check_strided_vector(y.i0)
     _check_strided_vector(len)
-    ccall((:handyg_g_flat_batch_i0, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}), out, z.c, z.i0, Cint(size(z.c, 1)), Cint(size(z.c, 2)), len, y.c, y.i0)
+    ccall((:handyg_g_flat_batch_i0, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}), out, z.c, z.i0, Cint(size(z.c, 1)), Cint(size(z.c, 2)), len, y.c, y.i0)
     return out
 end
 
@@ -147,7 +147,7 @@ end
     _check_colmajor_matrix(z)
     _check_strided_vector(y)
     _check_strided_vector(len)
-    ccall((:handyg_g_condensed_batch_rc, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{Float64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, m, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
+    ccall((:handyg_g_condensed_batch_rc, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{Float64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, m, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
     return out
 end
 
@@ -158,7 +158,7 @@ end
     _check_colmajor_matrix(z)
     _check_strided_vector(y)
     _check_strided_vector(len)
-    ccall((:handyg_g_condensed_batch_cc, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, m, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
+    ccall((:handyg_g_condensed_batch_cc, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}), out, m, z, Cint(size(z, 1)), Cint(size(z, 2)), len, y)
     return out
 end
 
@@ -171,33 +171,33 @@ end
     _check_strided_vector(y.c)
     _check_strided_vector(y.i0)
     _check_strided_vector(len)
-    ccall((:handyg_g_condensed_batch_i0, _LIB_PATH[]), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}), out, m, z.c, z.i0, Cint(size(z.c, 1)), Cint(size(z.c, 2)), len, y.c, y.i0)
+    ccall((:handyg_g_condensed_batch_i0, HandyG_jll.libhandyg), Cvoid, (Ptr{ComplexF64}, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}, Cint, Cint, Ptr{Cint}, Ptr{ComplexF64}, Ptr{Int8}), out, m, z.c, z.i0, Cint(size(z.c, 1)), Cint(size(z.c, 2)), len, y.c, y.i0)
     return out
 end
 
 @inline function _handyg_clearcache()
     _ensure_libhandyg!()
-    ccall((:handyg_clearcache, _LIB_PATH[]), Cvoid, ())
+    ccall((:handyg_clearcache, HandyG_jll.libhandyg), Cvoid, ())
     return nothing
 end
 
 @inline function _handyg_set_mpldelta!(x::Float64)
     _ensure_libhandyg!()
     xref = Ref{Float64}(x)
-    ccall((:handyg_set_mpldelta, _LIB_PATH[]), Cvoid, (Ref{Float64},), xref)
+    ccall((:handyg_set_mpldelta, HandyG_jll.libhandyg), Cvoid, (Ref{Float64},), xref)
     return nothing
 end
 
 @inline function _handyg_set_lidelta!(x::Float64)
     _ensure_libhandyg!()
     xref = Ref{Float64}(x)
-    ccall((:handyg_set_lidelta, _LIB_PATH[]), Cvoid, (Ref{Float64},), xref)
+    ccall((:handyg_set_lidelta, HandyG_jll.libhandyg), Cvoid, (Ref{Float64},), xref)
     return nothing
 end
 
 @inline function _handyg_set_hoelder_circle!(x::Float64)
     _ensure_libhandyg!()
     xref = Ref{Float64}(x)
-    ccall((:handyg_set_hoelder_circle, _LIB_PATH[]), Cvoid, (Ref{Float64},), xref)
+    ccall((:handyg_set_hoelder_circle, HandyG_jll.libhandyg), Cvoid, (Ref{Float64},), xref)
     return nothing
 end
